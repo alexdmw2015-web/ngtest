@@ -1,0 +1,21 @@
+:host { display: block; min-height: 100vh; }
+.site-header, .site-footer { align-items: center; display: flex; justify-content: space-between; margin: 0 auto; max-width: 1440px; padding: 22px 6.5%; }
+.site-header { border-bottom: 1px solid var(--line); }
+.brand { align-items: center; color: var(--ink); display: inline-flex; font-size: 1.25rem; font-weight: 750; gap: 9px; text-decoration: none; }
+.brand-mark { align-items: center; background: var(--green); border-radius: 50%; color: white; display: inline-flex; font-family: Georgia, serif; font-size: 1.1rem; height: 32px; justify-content: center; width: 32px; }
+.brand-dot { color: var(--coral); }
+nav { display: flex; gap: 32px; }
+nav a, .site-footer > span { color: var(--muted); font-size: .88rem; text-decoration: none; }
+nav a:hover { color: var(--green); }
+.header-cta { background: var(--green); border-radius: 3px; color: white; font-size: .85rem; padding: 11px 15px; text-decoration: none; }
+.header-cta span { color: #b7d88e; margin-left: 9px; }
+main { min-height: calc(100vh - 151px); }
+.site-footer { border-top: 1px solid var(--line); margin-top: 72px; padding-bottom: 25px; padding-top: 25px; }
+.site-footer .brand { font-size: 1rem; }
+.site-footer .brand-mark { height: 26px; width: 26px; }
+@media (max-width: 620px) {
+	.site-header, .site-footer { padding-left: 5%; padding-right: 5%; }
+	.site-header nav { display: none; }
+	.header-cta { font-size: .78rem; padding: 10px 11px; }
+	.site-footer > span:nth-child(2) { display: none; }
+}

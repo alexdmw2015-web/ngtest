@@ -1,0 +1,24 @@
+<header class="site-header">
+  <a class="brand" routerLink="/" aria-label="CookBook, на главную">
+    <span class="brand-mark">C</span>
+    <span>cookbook<span class="brand-dot">.</span></span>
+  </a>
+  <nav aria-label="Основная навигация">
+    <a routerLink="/" fragment="recipes">Рецепты</a>
+    <a routerLink="/" fragment="favorites">Избранное</a>
+  </nav>
+  <a class="header-cta" routerLink="/" fragment="recipes">Найти блюдо <span aria-hidden="true">↗</span></a>
+</header>
+
+<main>
+  <router-outlet />
+</main>
+
+<footer class="site-footer">
+  <a class="brand" routerLink="/">
+    <span class="brand-mark">C</span>
+    <span>cookbook<span class="brand-dot">.</span></span>
+  </a>
+  <span>Хорошая еда начинается с идеи.</span>
+  <span>© CookBook 2026</span>
+</footer>

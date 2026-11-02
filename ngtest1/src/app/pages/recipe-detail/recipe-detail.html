@@ -1,0 +1,47 @@
+<div class="detail-page">
+  <a class="back-link" routerLink="/">← <span>Все рецепты</span></a>
+
+  @if (loading()) {
+    <div class="detail-message">Загружаем рецепт...</div>
+  } @else if (error() && !recipe()) {
+    <div class="detail-message error-message" role="alert">{{ error() }}</div>
+  } @else if (recipe(); as item) {
+    @if (error()) {
+      <p class="detail-error" role="alert">{{ error() }}</p>
+    }
+    <article>
+      <header class="recipe-heading">
+        <div>
+          <p class="eyebrow">{{ item.category }} <span>·</span> {{ item.cookTime }} МИНУТ</p>
+          <h1>{{ item.title }}</h1>
+        </div>
+        <button class="favorite-action" [class.is-favorite]="isFavorite()" [attr.aria-pressed]="isFavorite()" (click)="toggleFavorite()">
+          <span aria-hidden="true">{{ isFavorite() ? '♥' : '♡' }}</span>
+          {{ isFavorite() ? 'В избранном' : 'В избранное' }}
+        </button>
+      </header>
+
+      <div class="recipe-hero">
+        <img [src]="item.image" [alt]="item.title" />
+        <div class="image-caption"><span>ВРЕМЯ ПРИГОТОВЛЕНИЯ</span><strong>{{ item.cookTime }} <small>мин</small></strong></div>
+      </div>
+
+      <div class="recipe-body">
+        <section class="ingredients" aria-labelledby="ingredients-title">
+          <p class="eyebrow">ПОДГОТОВЬТЕ</p>
+          <h2 id="ingredients-title">Ингредиенты</h2>
+          <ul>
+            @for (ingredient of item.ingredients; track $index) {
+              <li><span aria-hidden="true">＋</span>{{ ingredient }}</li>
+            }
+          </ul>
+        </section>
+        <section class="instructions" aria-labelledby="instructions-title">
+          <p class="eyebrow">ШАГ ЗА ШАГОМ</p>
+          <h2 id="instructions-title">Приготовление</h2>
+          <p>{{ item.instructions }}</p>
+        </section>
+      </div>
+    </article>
+  }
+</div>
