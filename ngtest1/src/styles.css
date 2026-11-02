@@ -1,0 +1,23 @@
+@import 'tailwindcss';
+
+:root {
+	color-scheme: light;
+	--green: #24533e;
+	--ink: #1d2922;
+	--muted: #737d74;
+	--coral: #d66b50;
+	--line: #e1e5dd;
+	background: #f8f9f5;
+	color: var(--ink);
+	font-family: 'Avenir Next', Avenir, 'Segoe UI', sans-serif;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; }
+button, input, select { font: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+.sr-only { clip: rect(0, 0, 0, 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }

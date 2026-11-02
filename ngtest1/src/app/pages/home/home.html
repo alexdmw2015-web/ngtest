@@ -1,0 +1,136 @@
+<div class="home-page">
+  <section class="intro" aria-labelledby="page-title">
+    <div class="intro-copy">
+      <p class="eyebrow"><span></span> ВДОХНОВЕНИЕ НА КАЖДЫЙ ДЕНЬ</p>
+      <h1 id="page-title">Вкусные планы<br />начинаются <em>здесь.</em></h1>
+      <p class="intro-text">Ищите любимые блюда, открывайте новые сочетания и сохраняйте рецепты, к которым захочется вернуться.</p>
+      <a class="browse-link" href="#recipes">Смотреть рецепты <span aria-hidden="true">↓</span></a>
+    </div>
+    @if (featuredRecipe(); as featured) {
+      <a class="feature" [routerLink]="['/recipes', featured.id]" [attr.aria-label]="'Открыть рецепт: ' + featured.title">
+        <img [src]="featured.image" [alt]="featured.title" />
+        <div class="feature-shade"></div>
+        <span class="feature-kicker">ИДЕЯ ДНЯ</span>
+        <div class="feature-info">
+          <div>
+            <span>{{ featured.category }} · {{ featured.cookTime }} минут</span>
+            <h2>{{ featured.title }}</h2>
+          </div>
+          <span class="feature-arrow" aria-hidden="true">↗</span>
+        </div>
+      </a>
+    } @else {
+      <div class="feature feature-empty" aria-hidden="true"></div>
+    }
+  </section>
+
+  <section class="search-panel" aria-label="Поиск и фильтрация рецептов">
+    <label class="search-field">
+      <span class="search-icon" aria-hidden="true">⌕</span>
+      <span class="sr-only">Поиск по названию</span>
+      <input type="search" placeholder="Например, паста или карри" [value]="query()" (input)="query.set($any($event.target).value)" />
+    </label>
+    <label class="category-field">
+      <span>Категория</span>
+      <select [value]="selectedCategory()" (change)="selectedCategory.set($any($event.target).value)">
+        <option value="">Все категории</option>
+        @for (category of categories(); track category) {
+          <option [value]="category">{{ category }}</option>
+        }
+      </select>
+    </label>
+    <a class="search-submit" href="#recipes">Найти рецепт <span aria-hidden="true">↗</span></a>
+  </section>
+
+  @if (error()) {
+    <p class="error-banner" role="alert">{{ error() }}</p>
+  }
+
+  <div class="content-layout">
+    <section class="recipe-section" id="recipes" aria-labelledby="recipes-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">КОЛЛЕКЦИЯ</p>
+          <h2 id="recipes-title">Все рецепты <span>{{ filteredRecipes().length }}</span></h2>
+        </div>
+        <p class="result-note">Просто, понятно, вкусно.</p>
+      </div>
+
+      @if (loading()) {
+        <div class="empty-state">Загружаем рецепты...</div>
+      } @else if (filteredRecipes().length) {
+        <div class="recipe-grid">
+          @for (recipe of filteredRecipes(); track recipe.id) {
+            <article class="recipe-card">
+              <a class="recipe-image" [routerLink]="['/recipes', recipe.id]">
+                <img [src]="recipe.image" [alt]="recipe.title" loading="lazy" />
+                <span class="category-tag">{{ recipe.category }}</span>
+              </a>
+              <button
+                class="favorite-button"
+                [class.is-favorite]="recipe.isFavorite"
+                [attr.aria-label]="recipe.isFavorite ? 'Убрать из избранного' : 'Добавить в избранное'"
+                [attr.aria-pressed]="recipe.isFavorite"
+                (click)="toggleFavorite($event, recipe)"
+              >{{ recipe.isFavorite ? '♥' : '♡' }}</button>
+              <div class="recipe-card-info">
+                <a [routerLink]="['/recipes', recipe.id]"><h3>{{ recipe.title }}</h3></a>
+                <span class="cook-time"><span aria-hidden="true">◷</span> {{ recipe.cookTime }} мин</span>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="empty-state">По вашему запросу ничего не нашлось. Попробуйте изменить поиск или категорию.</div>
+      }
+    </section>
+
+    <aside class="side-column" aria-label="Ваши подборки">
+      <section class="side-section" id="favorites" aria-labelledby="favorites-title">
+        <div class="side-heading">
+          <div>
+            <p class="eyebrow">СОХРАНЁННОЕ</p>
+            <h2 id="favorites-title">Избранное <span>{{ favorites().length }}</span></h2>
+          </div>
+          <span class="side-heart" aria-hidden="true">♥</span>
+        </div>
+        @if (favorites().length) {
+          <div class="compact-list">
+            @for (recipe of favorites(); track recipe.id) {
+              <a class="compact-recipe" [routerLink]="['/recipes', recipe.id]">
+                <img [src]="recipe.image" [alt]="recipe.title" loading="lazy" />
+                <span><strong>{{ recipe.title }}</strong><small>{{ recipe.cookTime }} мин · {{ recipe.category }}</small></span>
+                <span class="compact-arrow" aria-hidden="true">↗</span>
+              </a>
+            }
+          </div>
+        } @else {
+          <p class="side-empty">Добавляйте рецепты сердцем, чтобы собрать свою коллекцию.</p>
+        }
+      </section>
+
+      <section class="side-section recent-section" aria-labelledby="recent-title">
+        <div class="side-heading">
+          <div>
+            <p class="eyebrow">ВЫ СМОТРЕЛИ</p>
+            <h2 id="recent-title">Недавно открытые</h2>
+          </div>
+          <span class="recent-mark" aria-hidden="true">↺</span>
+        </div>
+        @if (api.recentlyViewed().length) {
+          <div class="compact-list">
+            @for (recipe of api.recentlyViewed(); track recipe.id) {
+              <a class="compact-recipe" [routerLink]="['/recipes', recipe.id]">
+                <img [src]="recipe.image" [alt]="recipe.title" loading="lazy" />
+                <span><strong>{{ recipe.title }}</strong><small>{{ recipe.cookTime }} мин · {{ recipe.category }}</small></span>
+                <span class="compact-arrow" aria-hidden="true">↗</span>
+              </a>
+            }
+          </div>
+        } @else {
+          <p class="side-empty">Открытые рецепты появятся здесь.</p>
+        }
+      </section>
+    </aside>
+  </div>
+</div>
